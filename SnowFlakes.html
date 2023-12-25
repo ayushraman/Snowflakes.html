@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas Snowfall</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles:wght@400;700&display=swap">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000; /* Dark Black Background */
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Rubik Bubbles', sans-serif;
+        }
+
+        .snowflake {
+            position: absolute;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            pointer-events: none;
+            animation: snowfall linear infinite;
+            filter: blur(0px);
+            transition: filter 0.5s ease-in-out;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0) rotate(0);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                filter: blur(0px); /* No blur as it falls */
+            }
+        }
+
+        .snowflake::before {
+            content: '❄'; /* Star-shaped symbol */
+            color: #fff; /* White color for the stars */
+            font-size: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: glow 1s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 1);
+            }
+        }
+
+        .merry-christmas {
+            font-size: 36px;
+            color: yellow;
+            text-shadow: 0 0 20px rgba(255, 255, 0, 1);
+            animation: glowText 1.5s infinite alternate;
+        }
+
+        @keyframes glowText {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 0, 1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="merry-christmas">Your Text Here
+    
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const numSnowflakes = 100;
+            
+            for (let i = 0; i < numSnowflakes; i++) {
+                createSnowflake();
+            }
+
+            function createSnowflake() {
+                const snowflake = document.createElement("div");
+                snowflake.className = "snowflake";
+                document.body.appendChild(snowflake);
+
+                const size = Math.random() * 20 + 5; // Random size between 5 and 25 pixels
+                const initialX = Math.random() * window.innerWidth;
+                const initialY = Math.random() * window.innerHeight;
+                const fallSpeed = Math.random() * 2 + 1;
+
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                snowflake.style.left = `${initialX}px`;
+                snowflake.style.top = `${initialY}px`;
+
+                const initialBlur = size > 15 ? 5 : 0; // Apply blur only to larger snowflakes
+                snowflake.style.filter = `blur(${initialBlur}px)`;
+
+                animateSnowflake(snowflake, fallSpeed);
+            }
+
+            function animateSnowflake(snowflake, fallSpeed) {
+                let positionY = parseFloat(snowflake.style.top);
+
+                function moveSnowflake() {
+                    positionY += fallSpeed;
+                    snowflake.style.top = `${positionY}px`;
+
+                    if (positionY > window.innerHeight) {
+                        // Reset snowflake if it goes below the window
+                        positionY = -20;
+                        snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+                        const size = Math.random() * 20 + 5;
+                        snowflake.style.width = `${size}px`;
+                        snowflake.style.height = `${size}px`;
+                        const initialBlur = size > 15 ? 5 : 0;
+                        snowflake.style.filter = `blur(${initialBlur}px)`;
+                    }
+
+                    requestAnimationFrame(moveSnowflake);
+                }
+
+                moveSnowflake();
+            }
+        });
+    </script>
+</body>
+</html>
